@@ -24,7 +24,7 @@ public class EditWardenController {
     private WardenRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.PUT, produces="application/json")
     public String get(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name,
@@ -35,7 +35,9 @@ public class EditWardenController {
     ) throws ParseException, IOException {
         Optional<Warden> findResult = this.repository.findById(id);
 
-        if (!findResult.isPresent()) return new ErrorResponse("Warden not found").toJSON();
+        if (!findResult.isPresent()) {
+            return new ErrorResponse("Warden not found").toJSON();
+        }
 
         Warden warden = findResult.get();
         warden.setName(name);

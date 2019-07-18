@@ -35,29 +35,41 @@ public class CreateAnimalController {
     private WardenRepository wardenRepository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
-    public String get(
+    @RequestMapping(method=RequestMethod.POST, produces="application/json")
+    public String post(
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "birth_day") String birth_day,
             @RequestParam(value = "subspecies_id", required = true) Long subspecies_id,
             @RequestParam(value = "warden_ids", required = true) Long[] warden_ids
-    ) throws ParseException, IOException {
+    ) throws IOException {
 
         Optional<Subspecies> subspeciesFindResult = this.subspeciesRepository.findById(subspecies_id);
 
-        if (!subspeciesFindResult.isPresent()) return new ErrorResponse("Subspecies not found").toJSON();
+        if (!subspeciesFindResult.isPresent()) {
+            return new ErrorResponse("Subspecies not found").toJSON();
+        }
 
         Iterable<Warden> wardensFindResult = this.wardenRepository.findAllById(Arrays.asList(warden_ids));
 
-        if (IterableUtils.size(wardensFindResult) == 0) return new ErrorResponse("Wardens not found").toJSON();
+        if (IterableUtils.size(wardensFindResult) == 0) {
+            return new ErrorResponse("Wardens not found").toJSON();
+        }
 
         Date birth_date = null;
 
-        if (!birth_day.equals("")) birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+        if (!birth_day.isEmpty()) {
+            try {
+                birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+            } catch (ParseException e) {
+                return new ErrorResponse("birth_day format dd.MM.yyyy").toJSON();
+            }
+        }
 
         Animal animal = new Animal();
         animal.setName(name);
-        if (birth_date != null) animal.setBirthDay(birth_date);
+        if (birth_date != null) {
+            animal.setBirthDay(birth_date);
+        }
         animal.setSubspecies(subspeciesFindResult.get());
         animal.setWardens(new HashSet<Warden>((Collection) wardensFindResult));
 

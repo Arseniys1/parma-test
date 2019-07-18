@@ -24,7 +24,7 @@ public class CreateSubspeciesController {
     private SubspeciesRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.POST, produces="application/json")
     public String get(
             @RequestParam(value = "name", required = true) String name
     ) throws IOException {

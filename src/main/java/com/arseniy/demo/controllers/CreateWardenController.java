@@ -2,6 +2,7 @@ package com.arseniy.demo.controllers;
 
 import com.arseniy.demo.WardenRepository;
 import com.arseniy.demo.models.Warden;
+import com.arseniy.demo.responses.ErrorResponse;
 import com.arseniy.demo.responses.OKResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +23,21 @@ public class CreateWardenController {
     private WardenRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.POST, produces="application/json")
     public String get(
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "family_name", required = true) String family_name,
             @RequestParam(value = "birth_day", required = true) String birth_day,
             @RequestParam(value = "married", required = true) Boolean married,
             @RequestParam(value = "salary", required = true) Double salary
-    ) throws ParseException, IOException {
-        Date birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+    ) throws IOException {
+        Date birth_date = null;
+
+        try {
+            birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+        } catch (ParseException e) {
+            return new ErrorResponse("birth_day format dd.MM.yyyy").toJSON();
+        }
 
         Warden warden = new Warden(name, family_name, birth_date, married, salary);
 

@@ -23,13 +23,15 @@ public class DeleteAnimalController {
     private AnimalRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.DELETE, produces="application/json")
     public String get(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
         Optional<Animal> findResult = this.repository.findById(id);
 
-        if (!findResult.isPresent()) return new ErrorResponse("Animal not found").toJSON();
+        if (!findResult.isPresent()) {
+            return new ErrorResponse("Animal not found").toJSON();
+        }
 
         Animal animal = findResult.get();
 

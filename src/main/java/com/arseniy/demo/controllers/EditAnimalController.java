@@ -34,7 +34,7 @@ public class EditAnimalController {
     private WardenRepository wardenRepository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.PUT, produces="application/json")
     public String get(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name,
@@ -51,18 +51,30 @@ public class EditAnimalController {
 
         Optional<Subspecies> subspeciesFindResult = this.subspeciesRepository.findById(subspecies_id);
 
-        if (!subspeciesFindResult.isPresent()) return new ErrorResponse("Subspecies not found").toJSON();
+        if (!subspeciesFindResult.isPresent()) {
+            return new ErrorResponse("Subspecies not found").toJSON();
+        }
 
         Iterable<Warden> wardensFindResult = this.wardenRepository.findAllById(Arrays.asList(warden_ids));
 
-        if (IterableUtils.size(wardensFindResult) == 0) return new ErrorResponse("Wardens not found").toJSON();
+        if (IterableUtils.size(wardensFindResult) == 0) {
+            return new ErrorResponse("Wardens not found").toJSON();
+        }
 
         Date birth_date = null;
 
-        if (!birth_day.equals("")) birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+        if (!birth_day.isEmpty()) {
+            try {
+                birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
+            } catch (ParseException e) {
+                return new ErrorResponse("birth_day format dd.MM.yyyy").toJSON();
+            }
+        }
 
         animal.setName(name);
-        if (birth_date != null) animal.setBirthDay(birth_date);
+        if (birth_date != null) {
+            animal.setBirthDay(birth_date);
+        }
         animal.setSubspecies(subspeciesFindResult.get());
         animal.setWardens(new HashSet<Warden>((Collection) wardensFindResult));
 

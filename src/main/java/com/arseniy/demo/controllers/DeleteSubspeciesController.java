@@ -22,13 +22,15 @@ public class DeleteSubspeciesController {
     private SubspeciesRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.DELETE, produces="application/json")
     public String get(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
         Optional<Subspecies> findResult = this.repository.findById(id);
 
-        if (!findResult.isPresent()) return new ErrorResponse("Subspecies not found").toJSON();
+        if (!findResult.isPresent()) {
+            return new ErrorResponse("Subspecies not found").toJSON();
+        }
 
         Subspecies subspecies = findResult.get();
 

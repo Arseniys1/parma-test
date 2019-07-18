@@ -21,14 +21,16 @@ public class EditSubspeciesController {
     private SubspeciesRepository repository;
 
 
-    @RequestMapping(method=RequestMethod.GET, produces="application/json")
+    @RequestMapping(method=RequestMethod.PUT, produces="application/json")
     public String get(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name
     ) throws IOException {
         Optional<Subspecies> findResult = this.repository.findById(id);
 
-        if (!findResult.isPresent()) return new ErrorResponse("Subspecies not found").toJSON();
+        if (!findResult.isPresent()) {
+            return new ErrorResponse("Subspecies not found").toJSON();
+        }
 
         Subspecies subspecies = findResult.get();
         subspecies.setName(name);
