@@ -24,7 +24,7 @@ public class CreateWardenController {
 
 
     @RequestMapping(method=RequestMethod.POST, produces="application/json")
-    public String get(
+    public String post(
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "family_name", required = true) String family_name,
             @RequestParam(value = "birth_day", required = true) String birth_day,

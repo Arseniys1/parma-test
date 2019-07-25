@@ -24,7 +24,7 @@ public class DeleteWardenController {
 
 
     @RequestMapping(method=RequestMethod.DELETE, produces="application/json")
-    public String get(
+    public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
         Optional<Warden> findResult = this.repository.findById(id);

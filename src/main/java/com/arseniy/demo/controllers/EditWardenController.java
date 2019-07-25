@@ -25,7 +25,7 @@ public class EditWardenController {
 
 
     @RequestMapping(method=RequestMethod.PUT, produces="application/json")
-    public String get(
+    public String put(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "family_name", required = true) String family_name,

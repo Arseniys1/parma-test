@@ -22,7 +22,7 @@ public class EditSubspeciesController {
 
 
     @RequestMapping(method=RequestMethod.PUT, produces="application/json")
-    public String get(
+    public String put(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name
     ) throws IOException {

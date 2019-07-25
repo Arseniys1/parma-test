@@ -35,13 +35,13 @@ public class EditAnimalController {
 
 
     @RequestMapping(method=RequestMethod.PUT, produces="application/json")
-    public String get(
+    public String put(
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "birth_day") String birth_day,
             @RequestParam(value = "subspecies_id", required = true) Long subspecies_id,
             @RequestParam(value = "warden_ids", required = true) Long[] warden_ids
-    ) throws ParseException, IOException {
+    ) throws IOException {
 
         Optional<Animal> findResult = this.animalRepository.findById(id);
 

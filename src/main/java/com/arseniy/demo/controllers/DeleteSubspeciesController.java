@@ -23,7 +23,7 @@ public class DeleteSubspeciesController {
 
 
     @RequestMapping(method=RequestMethod.DELETE, produces="application/json")
-    public String get(
+    public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
         Optional<Subspecies> findResult = this.repository.findById(id);
