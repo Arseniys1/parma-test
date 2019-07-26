@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EditWardenControllerTest {
 
     @Autowired
@@ -42,6 +44,6 @@ public class EditWardenControllerTest {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"ok\":true,\"response\":{\"id\":1,\"name\":\"Вася\",\"married\":false,\"salary\":10.5,\"familyName\":\"Пупкин\",\"birthDay\":310071600000}}"));
+                .andExpect(content().string("{\"ok\":true,\"response\":{\"birthDay\":310071600000,\"familyName\":\"Пупкин\",\"id\":1,\"married\":false,\"name\":\"Вася\",\"salary\":10.5}}"));
     }
 }

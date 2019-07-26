@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CreateAnimalControllerTest {
 
     @Autowired
@@ -49,6 +51,6 @@ public class CreateAnimalControllerTest {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"ok\":true,\"response\":{\"id\":1,\"subspecies\":{\"id\":1,\"name\":\"Какой-то вид\"},\"wardens\":[{\"id\":1,\"name\":\"Арсений\",\"married\":false,\"salary\":100.98,\"birthDay\":932839200000,\"familyName\":\"Лебедев\"}],\"name\":\"Вася\",\"birthDay\":932839200000}}"));
+                .andExpect(content().string("{\"ok\":true,\"response\":{\"birthDay\":932839200000,\"id\":1,\"name\":\"Вася\",\"subspecies\":{\"id\":1,\"name\":\"Какой-то вид\"},\"wardens\":[{\"birthDay\":932839200000,\"familyName\":\"Лебедев\",\"id\":1,\"married\":false,\"name\":\"Арсений\",\"salary\":100.98}]}}"));
     }
 }

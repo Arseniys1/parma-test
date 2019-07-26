@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import static com.fasterxml.jackson.databind.MapperFeature.SORT_PROPERTIES_ALPHABETICALLY;
+
 public class OKResponse implements Response {
 
     private boolean ok = true;
@@ -26,6 +28,8 @@ public class OKResponse implements Response {
     }
 
     public String toJSON() throws IOException {
-        return new ObjectMapper().writeValueAsString(this);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SORT_PROPERTIES_ALPHABETICALLY, true);
+        return objectMapper.writeValueAsString(this);
     }
 }
