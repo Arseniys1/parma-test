@@ -1,8 +1,7 @@
 package com.arseniy.demo.controllers;
 
-import com.arseniy.demo.AnimalRepository;
-import com.arseniy.demo.SubspeciesRepository;
 import com.arseniy.demo.responses.OKResponse;
+import com.arseniy.demo.services.SubspeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,11 +14,11 @@ import java.io.IOException;
 public class GetSubspeciesController {
 
     @Autowired
-    private SubspeciesRepository subspeciesRepository;
+    private SubspeciesService subspeciesService;
 
     @RequestMapping(method= RequestMethod.GET, produces="application/json")
     public String get() throws IOException {
-        return new OKResponse(this.subspeciesRepository.findAll()).toJSON();
+        return new OKResponse(this.subspeciesService.getSubspecies()).toJSON();
     }
 
 }

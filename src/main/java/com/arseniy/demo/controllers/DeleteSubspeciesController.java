@@ -1,10 +1,12 @@
 package com.arseniy.demo.controllers;
 
 import com.arseniy.demo.SubspeciesRepository;
+import com.arseniy.demo.exceptions.ErrorResponseException;
 import com.arseniy.demo.models.Subspecies;
 import com.arseniy.demo.models.Warden;
 import com.arseniy.demo.responses.ErrorResponse;
 import com.arseniy.demo.responses.OKResponse;
+import com.arseniy.demo.services.SubspeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,24 +21,20 @@ import java.util.Optional;
 public class DeleteSubspeciesController {
 
     @Autowired
-    private SubspeciesRepository repository;
+    private SubspeciesService subspeciesService;
 
 
     @RequestMapping(method=RequestMethod.DELETE, produces="application/json")
     public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
-        Optional<Subspecies> findResult = this.repository.findById(id);
+        try {
+            this.subspeciesService.deleteSubspecies(id);
 
-        if (!findResult.isPresent()) {
-            return new ErrorResponse("Subspecies not found").toJSON();
+            return new OKResponse().toJSON();
+        } catch (ErrorResponseException e) {
+            return new ErrorResponse(e.getMessage()).toJSON();
         }
-
-        Subspecies subspecies = findResult.get();
-
-        this.repository.delete(subspecies);
-
-        return new OKResponse().toJSON();
     }
 
 }

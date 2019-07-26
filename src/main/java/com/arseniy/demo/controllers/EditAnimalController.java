@@ -1,14 +1,10 @@
 package com.arseniy.demo.controllers;
 
-import com.arseniy.demo.AnimalRepository;
-import com.arseniy.demo.SubspeciesRepository;
-import com.arseniy.demo.WardenRepository;
+import com.arseniy.demo.exceptions.ErrorResponseException;
 import com.arseniy.demo.models.Animal;
-import com.arseniy.demo.models.Subspecies;
-import com.arseniy.demo.models.Warden;
 import com.arseniy.demo.responses.ErrorResponse;
 import com.arseniy.demo.responses.OKResponse;
-import org.apache.commons.collections4.IterableUtils;
+import com.arseniy.demo.services.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,23 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RestController
 @RequestMapping(path="/editAnimal")
 public class EditAnimalController {
 
     @Autowired
-    private AnimalRepository animalRepository;
-
-    @Autowired
-    private SubspeciesRepository subspeciesRepository;
-
-    @Autowired
-    private WardenRepository wardenRepository;
-
+    private AnimalService animalService;
 
     @RequestMapping(method=RequestMethod.PUT, produces="application/json")
     public String put(
@@ -42,45 +28,13 @@ public class EditAnimalController {
             @RequestParam(value = "subspecies_id", required = true) Long subspecies_id,
             @RequestParam(value = "warden_ids", required = true) Long[] warden_ids
     ) throws IOException {
+        try {
+            Animal animal = this.animalService.editAnimal(id, name, birth_day, subspecies_id, warden_ids);
 
-        Optional<Animal> findResult = this.animalRepository.findById(id);
-
-        if (!findResult.isPresent()) return new ErrorResponse("Animal not found").toJSON();
-
-        Animal animal = findResult.get();
-
-        Optional<Subspecies> subspeciesFindResult = this.subspeciesRepository.findById(subspecies_id);
-
-        if (!subspeciesFindResult.isPresent()) {
-            return new ErrorResponse("Subspecies not found").toJSON();
+            return new OKResponse(animal).toJSON();
+        } catch (ErrorResponseException e) {
+            return new ErrorResponse(e.getMessage()).toJSON();
         }
-
-        Iterable<Warden> wardensFindResult = this.wardenRepository.findAllById(Arrays.asList(warden_ids));
-
-        if (IterableUtils.size(wardensFindResult) == 0) {
-            return new ErrorResponse("Wardens not found").toJSON();
-        }
-
-        Date birth_date = null;
-
-        if (!birth_day.isEmpty()) {
-            try {
-                birth_date = new SimpleDateFormat("dd.MM.yyyy").parse(birth_day);
-            } catch (ParseException e) {
-                return new ErrorResponse("birth_day format dd.MM.yyyy").toJSON();
-            }
-        }
-
-        animal.setName(name);
-        if (birth_date != null) {
-            animal.setBirthDay(birth_date);
-        }
-        animal.setSubspecies(subspeciesFindResult.get());
-        animal.setWardens(new HashSet<Warden>((Collection) wardensFindResult));
-
-        this.animalRepository.save(animal);
-
-        return new OKResponse(animal).toJSON();
     }
 
 }
