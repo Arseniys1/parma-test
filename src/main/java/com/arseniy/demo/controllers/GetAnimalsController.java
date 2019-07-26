@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/getAnimals")
-public class GetAnimalsController {
+public class GetAnimalsController extends Controller {
 
     @Autowired
     private AnimalService animalService;

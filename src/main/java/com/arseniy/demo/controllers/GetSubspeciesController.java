@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/getSubspecies")
-public class GetSubspeciesController {
+public class GetSubspeciesController extends Controller {
 
     @Autowired
     private SubspeciesService subspeciesService;

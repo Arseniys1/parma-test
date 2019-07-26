@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/createWarden")
-public class CreateWardenController {
+public class CreateWardenController extends Controller {
 
     @Autowired
     private WardenService wardenService;
@@ -33,7 +33,7 @@ public class CreateWardenController {
 
             return new OKResponse(warden).toJSON();
         } catch (ErrorResponseException e) {
-            return new ErrorResponse(e.getMessage()).toJSON();
+            throw new ErrorResponseException(e.getMessage());
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/deleteSubspecies")
-public class DeleteSubspeciesController {
+public class DeleteSubspeciesController extends Controller {
 
     @Autowired
     private SubspeciesService subspeciesService;
@@ -33,7 +33,7 @@ public class DeleteSubspeciesController {
 
             return new OKResponse().toJSON();
         } catch (ErrorResponseException e) {
-            return new ErrorResponse(e.getMessage()).toJSON();
+            throw new ErrorResponseException(e.getMessage());
         }
     }
 

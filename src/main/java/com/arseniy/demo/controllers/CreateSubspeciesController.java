@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/createSubspecies")
-public class CreateSubspeciesController {
+public class CreateSubspeciesController extends Controller {
 
     @Autowired
     private SubspeciesService subspeciesService;

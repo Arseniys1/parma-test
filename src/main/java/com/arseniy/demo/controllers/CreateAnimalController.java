@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/createAnimal")
-public class CreateAnimalController {
+public class CreateAnimalController extends Controller {
 
     @Autowired
     private AnimalService animalService;
@@ -32,7 +32,7 @@ public class CreateAnimalController {
 
             return new OKResponse(animal).toJSON();
         } catch (ErrorResponseException e) {
-            return new ErrorResponse(e.getMessage()).toJSON();
+            throw new ErrorResponseException(e.getMessage());
         }
     }
 

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/deleteAnimal")
-public class DeleteAnimalController {
+public class DeleteAnimalController extends Controller {
 
     @Autowired
     private AnimalService animalService;
@@ -28,7 +28,7 @@ public class DeleteAnimalController {
 
             return new OKResponse().toJSON();
         } catch (ErrorResponseException e) {
-            return new ErrorResponse(e.getMessage()).toJSON();
+            throw new ErrorResponseException(e.getMessage());
         }
     }
 

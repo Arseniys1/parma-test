@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/editSubspecies")
-public class EditSubspeciesController {
+public class EditSubspeciesController extends Controller {
 
     @Autowired
     private SubspeciesService subspeciesService;
@@ -31,7 +31,7 @@ public class EditSubspeciesController {
 
             return new OKResponse(subspecies).toJSON();
         } catch (ErrorResponseException e) {
-            return new ErrorResponse(e.getMessage()).toJSON();
+            throw new ErrorResponseException(e.getMessage());
         }
     }
 

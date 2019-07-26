@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path="/getWardens")
-public class GetWardensController {
+public class GetWardensController extends Controller {
 
     @Autowired
     private WardenService wardenService;
