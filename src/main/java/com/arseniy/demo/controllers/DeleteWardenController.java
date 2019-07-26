@@ -24,13 +24,9 @@ public class DeleteWardenController extends Controller {
     public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
-        try {
-            this.wardenService.deleteWarden(id);
+        this.wardenService.deleteWarden(id);
 
-            return new OKResponse().toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse().toJSON();
     }
 
 }

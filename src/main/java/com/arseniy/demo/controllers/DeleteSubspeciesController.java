@@ -28,13 +28,9 @@ public class DeleteSubspeciesController extends Controller {
     public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
-        try {
-            this.subspeciesService.deleteSubspecies(id);
+        this.subspeciesService.deleteSubspecies(id);
 
-            return new OKResponse().toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse().toJSON();
     }
 
 }

@@ -29,13 +29,9 @@ public class EditWardenController extends Controller {
             @RequestParam(value = "married", required = true) Boolean married,
             @RequestParam(value = "salary", required = true) Double salary
     ) throws IOException {
-        try {
-            Warden warden = this.wardenService.editWarden(id, name, family_name, birth_day, married, salary);
+        Warden warden = this.wardenService.editWarden(id, name, family_name, birth_day, married, salary);
 
-            return new OKResponse(warden).toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse(warden).toJSON();
     }
 
 }

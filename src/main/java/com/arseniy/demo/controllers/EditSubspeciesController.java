@@ -26,13 +26,9 @@ public class EditSubspeciesController extends Controller {
             @RequestParam(value = "id", required = true) Long id,
             @RequestParam(value = "name", required = true) String name
     ) throws IOException {
-        try {
-            Subspecies subspecies = this.subspeciesService.editSubspecies(id, name);
+        Subspecies subspecies = this.subspeciesService.editSubspecies(id, name);
 
-            return new OKResponse(subspecies).toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse(subspecies).toJSON();
     }
 
 }

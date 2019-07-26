@@ -23,13 +23,9 @@ public class DeleteAnimalController extends Controller {
     public String delete(
             @RequestParam(value = "id", required = true) Long id
     ) throws IOException {
-        try {
-            this.animalService.deleteAnimal(id);
+        this.animalService.deleteAnimal(id);
 
-            return new OKResponse().toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse().toJSON();
     }
 
 }

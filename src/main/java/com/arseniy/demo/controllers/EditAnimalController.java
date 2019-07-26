@@ -28,13 +28,9 @@ public class EditAnimalController extends Controller {
             @RequestParam(value = "subspecies_id", required = true) Long subspecies_id,
             @RequestParam(value = "warden_ids", required = true) Long[] warden_ids
     ) throws IOException {
-        try {
-            Animal animal = this.animalService.editAnimal(id, name, birth_day, subspecies_id, warden_ids);
+        Animal animal = this.animalService.editAnimal(id, name, birth_day, subspecies_id, warden_ids);
 
-            return new OKResponse(animal).toJSON();
-        } catch (ErrorResponseException e) {
-            throw new ErrorResponseException(e.getMessage());
-        }
+        return new OKResponse(animal).toJSON();
     }
 
 }
